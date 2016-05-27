@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF2196F3</color>
+    <color name="colorPrimaryDark">#FF2196F3</color>
+    <color name="colorAccent">#FF42A5F5</color>
+
+    <color name="colorBlue50">#E3F2FD</color>
+    <color name="colorBlue100">#BBDEFB</color>
+    <color name="colorBlue200">#90CAF9</color>
+    <color name="colorBlue300">#64B5F6</color>
+
+    <color name="colorTextDeep">#333333</color>
+    <color name="colorTextSix">#666666</color>
+    <color name="colorTextNine">#999999</color>
+    <color name="colorTextGray">#cccccc</color>
+
+    <color name="colorValueLower">#ffffbb33</color>
+    <color name="colorValueNormal">#ff99cc00</color>
+    <color name="colorValueUpper">#ffff4444</color>
+
+    <color name="colorMusicBackground">#25272d</color>
+    <color name="colorMusicEmptyProgress">#20FFFFFF</color>
+
+    <color name="colorBasicWhite">#FFFFFF</color>
+    <color name="colorBasicWhitePressed">#eeeeee</color>
+    <color name="colorBasicLine">#cccccc</color>
+    <color name="colorBasicTextNine">#999999</color>
+    <color name="colorBasicTextSix">#666666</color>
+    <color name="colorBasicTranslucentSixWhite">#88ffffff</color>
+    <color name="colorBasicTranslucentNineWhite">#ddffffff</color>
+    <color name="colorBasicTranslucentNineBlack">#dd000000</color>
+</resources>
