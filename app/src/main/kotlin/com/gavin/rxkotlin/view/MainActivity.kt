@@ -11,10 +11,12 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import com.gavin.rxkotlin.view.base.BaseActivity
 import com.gavin.rxkotlin.R
+import com.gavin.rxkotlin.event.LoginSuccessEvent
+import com.gavin.rxkotlin.view.base.BaseActivity
 import com.gavin.rxkotlin.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import org.jetbrains.anko.startActivity
 
@@ -102,4 +104,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             TAG_ACTIVITY_LOGIN -> startActivity<LoginActivity>()
         }
     }
+
+
+    /*********************
+     * Event Bus start
+     *********************/
+    fun onLoginSuccessEvent(event: LoginSuccessEvent) {
+        tvLoginState.text = String.format(getString(R.string.login_state_success), event.userInfo.phoneNo)
+    }
+    /*********************
+     * Event Bus end
+     *********************/
 }

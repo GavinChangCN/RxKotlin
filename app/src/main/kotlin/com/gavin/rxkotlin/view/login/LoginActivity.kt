@@ -9,7 +9,6 @@ import android.content.Loader
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -18,20 +17,23 @@ import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import com.gavin.rxkotlin.view.base.BaseActivity
 import com.gavin.rxkotlin.R
+import com.gavin.rxkotlin.model.bean.UserInfo
+import com.gavin.rxkotlin.presenter.normal.login.LoginPresenter
+import com.gavin.rxkotlin.view.MainActivity
+import com.gavin.rxkotlin.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.telephonyManager
 import java.util.*
 
 /**
  * A login screen that offers login via email/password.
  */
-class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor> {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private var mAuthTask: UserLoginTask? = null
+class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor>, LoginView {
+
+
+    private val mLoginPresenter: LoginPresenter = LoginPresenter(this);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,9 +85,6 @@ class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     private fun attemptLogin() {
-        if (mAuthTask != null) {
-            return
-        }
 
         // Reset errors.
         metPhone.error = null
@@ -121,11 +120,7 @@ class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor> {
             // form field with an error.
             focusView!!.requestFocus()
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true)
-            mAuthTask = UserLoginTask(phone, password)
-            mAuthTask!!.execute(null as Void)
+            mLoginPresenter.login()
         }
     }
 
@@ -209,52 +204,6 @@ class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor> {
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {
-
-        override fun doInBackground(vararg params: Void): Boolean? {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
-                return false
-            }
-
-            for (credential in DUMMY_CREDENTIALS) {
-                val pieces = credential.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (pieces[0] == mEmail) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1] == mPassword
-                }
-            }
-
-            // TODO: register the new account here.
-            return true
-        }
-
-        override fun onPostExecute(success: Boolean?) {
-            mAuthTask = null
-            showProgress(false)
-
-            if (success!!) {
-                finish()
-            } else {
-                metPassword.error = getString(R.string.error_incorrect_password)
-                metPassword.requestFocus()
-            }
-        }
-
-        override fun onCancelled() {
-            mAuthTask = null
-            showProgress(false)
-        }
-    }
-
     companion object {
 
         /**
@@ -267,6 +216,35 @@ class LoginActivity : BaseActivity(), LoaderCallbacks<Cursor> {
          * TODO: remove after connecting to a real authentication system.
          */
         private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
+    }
+
+    override fun getUserName(): String = metPhone.text.toString()
+
+    override fun getPassword(): String = metPassword.text.toString()
+
+    override fun clearUserName() {
+        metPhone.text.clear()
+    }
+
+    override fun clearPassword() {
+        metPassword.text.clear()
+    }
+
+    override fun showLoading() {
+        showProgress(true)
+    }
+
+    override fun hideLoading() {
+        showProgress(false)
+    }
+
+    override fun toMainActivity(userinfo: UserInfo) {
+        snackbar(btnSignIn, "登录成功")
+        startActivity<MainActivity>()
+    }
+
+    override fun showFailedError() {
+        snackbar(btnSignIn, "登录失败")
     }
 }
 

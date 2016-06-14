@@ -1,4 +1,4 @@
-package com.gavin.rxkotlin.model;
+package com.gavin.rxkotlin.model.bean;
 
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;

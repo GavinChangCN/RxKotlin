@@ -2,8 +2,10 @@ package com.gavin.rxkotlin.view.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.gavin.rxkotlin.R
 import com.gavin.rxkotlin.app.GavinApplication
@@ -49,8 +51,16 @@ open class BaseActivity: SwipeBackActivity() {
     /**
      * normal toast
      */
-    fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    open fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(this, message, duration).show();
+    }
+
+    open fun Activity.snackbar(view: View,  message: CharSequence, duration: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(view, message, duration).setAction(null, null).show()
+    }
+
+    open fun Activity.snackbar(view: View,  message: CharSequence, action: CharSequence, listener: View.OnClickListener, duration: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(view, message, duration).setAction(action, listener).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
